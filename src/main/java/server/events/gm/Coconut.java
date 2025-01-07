@@ -24,7 +24,7 @@ package server.events.gm;
 
 import client.Character;
 import constants.id.MapId;
-import server.TimerManager;
+import server.Scheduler;
 import server.maps.MapleMap;
 import tools.PacketCreator;
 
@@ -59,7 +59,7 @@ public class Coconut extends Event {
         setCoconutsHittable(true);
         map.broadcastMessage(PacketCreator.getClock(300));
 
-        TimerManager.getInstance().schedule(() -> {
+        Scheduler.getInstance().schedule(() -> {
             if (map.getId() == MapId.EVENT_COCONUT_HARVEST) {
                 if (getMapleScore() == getStoryScore()) {
                     bonusTime();
@@ -92,7 +92,7 @@ public class Coconut extends Event {
 
     public void bonusTime() {
         map.broadcastMessage(PacketCreator.getClock(120));
-        TimerManager.getInstance().schedule(() -> {
+        Scheduler.getInstance().schedule(() -> {
             if (getMapleScore() == getStoryScore()) {
                 for (Character chr : map.getCharacters()) {
                     chr.sendPacket(PacketCreator.showEffect("event/coconut/lose"));
@@ -128,7 +128,7 @@ public class Coconut extends Event {
 
     public void warpOut() {
         setCoconutsHittable(false);
-        TimerManager.getInstance().schedule(() -> {
+        Scheduler.getInstance().schedule(() -> {
             List<Character> chars = new ArrayList<>(map.getCharacters());
 
             for (Character chr : chars) {

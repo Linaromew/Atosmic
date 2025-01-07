@@ -679,10 +679,10 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                     mc.setChallenged(false);
                     mc.changeMap(map, map.getPortal(0));
                     mc.sendPacket(PacketCreator.serverNotice(6, LanguageConstants.getMessage(mc, LanguageConstants.CPQEntryLobby)));
-                    TimerManager tMan = TimerManager.getInstance();
+                    Scheduler tMan = Scheduler.getInstance();
                     tMan.schedule(() -> mapClock((int) MINUTES.toSeconds(3)), 1500);
 
-                    mc.setCpqTimer(TimerManager.getInstance().schedule(() -> mc.changeMap(mapExit, mapExit.getPortal(0)), MINUTES.toMillis(3)));
+                    mc.setCpqTimer(Scheduler.getInstance().schedule(() -> mc.changeMap(mapExit, mapExit.getPortal(0)), MINUTES.toMillis(3)));
                 }
             }
         } catch (Exception ex) {
@@ -766,20 +766,20 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                     Character mc = mpc.getPlayer();
                     if (mc != null) {
                         mc.changeMap(lobbyMap, lobbyMap.getPortal(0));
-                        TimerManager tMan = TimerManager.getInstance();
+                        Scheduler tMan = Scheduler.getInstance();
                         tMan.schedule(() -> mapClock(10), 1500);
                     }
                 }
                 for (PartyCharacter mpc : getPlayer().getParty().getMembers()) {
                     Character mc = mpc.getPlayer();
                     if (mc != null) {
-                        TimerManager tMan = TimerManager.getInstance();
+                        Scheduler tMan = Scheduler.getInstance();
                         tMan.schedule(() -> mapClock(10), 1500);
                     }
                 }
             }
             final int mapid = c.getPlayer().getMapId() + 1;
-            TimerManager tMan = TimerManager.getInstance();
+            Scheduler tMan = Scheduler.getInstance();
             tMan.schedule(() -> {
                 try {
                     for (PartyCharacter mpc : getPlayer().getParty().getMembers()) {
@@ -831,7 +831,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                 }
             }
             final int mapid = c.getPlayer().getMapId() + 100;
-            TimerManager tMan = TimerManager.getInstance();
+            Scheduler tMan = Scheduler.getInstance();
             tMan.schedule(() -> {
                 try {
                     for (PartyCharacter mpc : getPlayer().getParty().getMembers()) {
@@ -922,10 +922,10 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                     mc.setChallenged(false);
                     mc.changeMap(map, map.getPortal(0));
                     mc.sendPacket(PacketCreator.serverNotice(6, LanguageConstants.getMessage(mc, LanguageConstants.CPQEntryLobby)));
-                    TimerManager tMan = TimerManager.getInstance();
+                    Scheduler tMan = Scheduler.getInstance();
                     tMan.schedule(() -> mapClock((int) MINUTES.toSeconds(3)), 1500);
 
-                    mc.setCpqTimer(TimerManager.getInstance().schedule(() -> mc.changeMap(mapExit, mapExit.getPortal(0)), MINUTES.toMillis(3)));
+                    mc.setCpqTimer(Scheduler.getInstance().schedule(() -> mc.changeMap(mapExit, mapExit.getPortal(0)), MINUTES.toMillis(3)));
                 }
             }
         } catch (Exception ex) {

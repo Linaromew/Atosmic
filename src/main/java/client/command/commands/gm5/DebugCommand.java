@@ -28,7 +28,6 @@ import client.Client;
 import client.command.Command;
 import constants.id.NpcId;
 import net.server.Server;
-import server.TimerManager;
 import server.life.Monster;
 import server.life.SpawnPoint;
 import server.maps.MapObject;

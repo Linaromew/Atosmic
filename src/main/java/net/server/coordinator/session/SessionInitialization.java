@@ -2,7 +2,7 @@ package net.server.coordinator.session;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import server.TimerManager;
+import server.Scheduler;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -70,7 +70,7 @@ public class SessionInitialization
                         return InitializationResult.TIMED_OUT;
                     }
 
-                    TimerManager.getInstance().schedule(() -> initialize(remoteHost), RETRY_DELAY_MILLIS);
+                    Scheduler.getInstance().schedule(() -> initialize(remoteHost), RETRY_DELAY_MILLIS);
                 }
             }
         }

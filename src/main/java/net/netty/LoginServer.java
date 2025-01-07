@@ -18,9 +18,8 @@ public class LoginServer extends AbstractServer {
     @Override
     public void start() {
         EventLoopGroup parentGroup = new NioEventLoopGroup();
-        EventLoopGroup childGroup = new NioEventLoopGroup();
         ServerBootstrap bootstrap = new ServerBootstrap()
-                .group(parentGroup, childGroup)
+                .group(parentGroup)
                 .channel(NioServerSocketChannel.class)
                 .childHandler(new LoginServerInitializer());
 

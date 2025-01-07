@@ -23,7 +23,7 @@ package server.events.gm;
 
 import client.Character;
 import constants.id.MapId;
-import server.TimerManager;
+import server.Scheduler;
 import tools.PacketCreator;
 
 import java.util.concurrent.ScheduledFuture;
@@ -39,7 +39,7 @@ public class Ola {
 
     public Ola(final Character chr) {
         this.chr = chr;
-        this.schedule = TimerManager.getInstance().schedule(() -> {
+        this.schedule = Scheduler.getInstance().schedule(() -> {
             if (MapId.isOlaOla(chr.getMapId())) {
                 chr.changeMap(chr.getMap().getReturnMap());
             }

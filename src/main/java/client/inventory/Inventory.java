@@ -28,7 +28,7 @@ import constants.inventory.ItemConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import server.ItemInformationProvider;
-import server.TimerManager;
+import server.Scheduler;
 import tools.Pair;
 
 import java.util.ArrayList;
@@ -296,7 +296,7 @@ public class Inventory implements Iterable<Item> {
 
         if (ItemConstants.isRateCoupon(item.getItemId())) {
             // deadlocks with coupons rates found thanks to GabrielSin & Masterrulax
-            TimerManager.getInstance().execute(() -> owner.updateCouponRates());
+            Scheduler.getInstance().execute(() -> owner.updateCouponRates());
         }
 
         return slotId;
@@ -306,7 +306,7 @@ public class Inventory implements Iterable<Item> {
         inventory.put(slot, item);
 
         if (ItemConstants.isRateCoupon(item.getItemId())) {
-            TimerManager.getInstance().execute(() -> owner.updateCouponRates());
+            Scheduler.getInstance().execute(() -> owner.updateCouponRates());
         }
     }
 
@@ -315,7 +315,7 @@ public class Inventory implements Iterable<Item> {
         item = inventory.remove(slot);
 
         if (item != null && ItemConstants.isRateCoupon(item.getItemId())) {
-            TimerManager.getInstance().execute(() -> owner.updateCouponRates());
+            Scheduler.getInstance().execute(() -> owner.updateCouponRates());
         }
     }
 

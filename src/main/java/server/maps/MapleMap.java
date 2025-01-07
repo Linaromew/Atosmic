@@ -50,8 +50,8 @@ import org.slf4j.LoggerFactory;
 import scripting.event.EventInstanceManager;
 import scripting.map.MapScriptManager;
 import server.ItemInformationProvider;
+import server.Scheduler;
 import server.StatEffect;
-import server.TimerManager;
 import server.events.gm.Coconut;
 import server.events.gm.Fitness;
 import server.events.gm.Ola;
@@ -768,7 +768,7 @@ public class MapleMap {
             return;
         }
 
-        itemMonitor = TimerManager.getInstance().register(() -> {
+        itemMonitor = Scheduler.getInstance().register(() -> {
             try {
                 if (characters.isEmpty()) {
                     if (itemMonitorTimeout == 0) {
@@ -798,7 +798,7 @@ public class MapleMap {
             }
         }, YamlConfig.config.server.ITEM_MONITOR_TIME, YamlConfig.config.server.ITEM_MONITOR_TIME);
 
-        expireItemsTask = TimerManager.getInstance().register(() -> makeDisappearExpiredItemDrops(), YamlConfig.config.server.ITEM_EXPIRE_CHECK, YamlConfig.config.server.ITEM_EXPIRE_CHECK);
+        expireItemsTask = Scheduler.getInstance().register(() -> makeDisappearExpiredItemDrops(), YamlConfig.config.server.ITEM_EXPIRE_CHECK, YamlConfig.config.server.ITEM_EXPIRE_CHECK);
 
         if (YamlConfig.config.server.USE_SPAWN_LOOT_ON_ANIMATION) {
             try {
@@ -806,10 +806,10 @@ public class MapleMap {
             } finally {
                 }
 
-            mobSpawnLootTask = TimerManager.getInstance().register(() -> spawnMobItemDrops(), 200, 200);
+            mobSpawnLootTask = Scheduler.getInstance().register(() -> spawnMobItemDrops(), 200, 200);
         }
 
-        characterStatUpdateTask = TimerManager.getInstance().register(() -> runCharacterStatUpdate(), 200, 200);
+        characterStatUpdateTask = Scheduler.getInstance().register(() -> runCharacterStatUpdate(), 200, 200);
 
         itemMonitorTimeout = 1;
     }
@@ -1915,7 +1915,7 @@ public class MapleMap {
     public void spawnMist(final Mist mist, final int duration, boolean poison, boolean fake, boolean recovery) {
         addMapObject(mist);
         broadcastMessage(fake ? mist.makeFakeSpawnData(30) : mist.makeSpawnData());
-        TimerManager tMan = TimerManager.getInstance();
+        Scheduler tMan = Scheduler.getInstance();
         final ScheduledFuture<?> poisonSchedule;
         if (poison) {
             Runnable poisonTask = () -> {
@@ -2222,7 +2222,7 @@ public class MapleMap {
         if (mapid == MapId.FROM_LITH_TO_RIEN) { // To Rien
             int travelTime = getWorldServer().getTransportationTime((int) MINUTES.toMillis(1));
             chr.sendPacket(PacketCreator.getClock(travelTime / 1000));
-            TimerManager.getInstance().schedule(() -> {
+            Scheduler.getInstance().schedule(() -> {
                 if (chr.getMapId() == MapId.FROM_LITH_TO_RIEN) {
                     chr.changeMap(MapId.DANGEROUS_FOREST, 0);
                 }
@@ -2230,7 +2230,7 @@ public class MapleMap {
         } else if (mapid == MapId.FROM_RIEN_TO_LITH) { // To Lith Harbor
             int travelTime = getWorldServer().getTransportationTime((int) MINUTES.toMillis(1));
             chr.sendPacket(PacketCreator.getClock(travelTime / 1000));
-            TimerManager.getInstance().schedule(() -> {
+            Scheduler.getInstance().schedule(() -> {
                 if (chr.getMapId() == MapId.FROM_RIEN_TO_LITH) {
                     chr.changeMap(MapId.LITH_HARBOUR, 3);
                 }
@@ -2238,7 +2238,7 @@ public class MapleMap {
         } else if (mapid == MapId.FROM_ELLINIA_TO_EREVE) { // To Ereve (SkyFerry)
             int travelTime = getWorldServer().getTransportationTime((int) MINUTES.toMillis(2));
             chr.sendPacket(PacketCreator.getClock(travelTime / 1000));
-            TimerManager.getInstance().schedule(() -> {
+            Scheduler.getInstance().schedule(() -> {
                 if (chr.getMapId() == MapId.FROM_ELLINIA_TO_EREVE) {
                     chr.changeMap(MapId.SKY_FERRY, 0);
                 }
@@ -2246,7 +2246,7 @@ public class MapleMap {
         } else if (mapid == MapId.FROM_EREVE_TO_ELLINIA) { // To Victoria Island (SkyFerry)
             int travelTime = getWorldServer().getTransportationTime((int) MINUTES.toMillis(2));
             chr.sendPacket(PacketCreator.getClock(travelTime / 1000));
-            TimerManager.getInstance().schedule(() -> {
+            Scheduler.getInstance().schedule(() -> {
                 if (chr.getMapId() == MapId.FROM_EREVE_TO_ELLINIA) {
                     chr.changeMap(MapId.ELLINIA_SKY_FERRY, 0);
                 }
@@ -2254,7 +2254,7 @@ public class MapleMap {
         } else if (mapid == MapId.FROM_EREVE_TO_ORBIS) { // To Orbis (SkyFerry)
             int travelTime = getWorldServer().getTransportationTime((int) MINUTES.toMillis(8));
             chr.sendPacket(PacketCreator.getClock(travelTime / 1000));
-            TimerManager.getInstance().schedule(() -> {
+            Scheduler.getInstance().schedule(() -> {
                 if (chr.getMapId() == MapId.FROM_EREVE_TO_ORBIS) {
                     chr.changeMap(MapId.ORBIS_STATION, 0);
                 }
@@ -2262,7 +2262,7 @@ public class MapleMap {
         } else if (mapid == MapId.FROM_ORBIS_TO_EREVE) { // To Ereve From Orbis (SkyFerry)
             int travelTime = getWorldServer().getTransportationTime((int) MINUTES.toMillis(8));
             chr.sendPacket(PacketCreator.getClock(travelTime / 1000));
-            TimerManager.getInstance().schedule(() -> {
+            Scheduler.getInstance().schedule(() -> {
                 if (chr.getMapId() == MapId.FROM_ORBIS_TO_EREVE) {
                     chr.changeMap(MapId.SKY_FERRY, 0);
                 }

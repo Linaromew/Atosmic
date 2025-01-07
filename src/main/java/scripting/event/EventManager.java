@@ -34,7 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scripting.event.scheduler.EventScriptScheduler;
 import server.Marriage;
-import server.TimerManager;
+import server.Scheduler;
 import server.expeditions.Expedition;
 import server.life.LifeFactory;
 import server.life.Monster;
@@ -856,7 +856,7 @@ public class EventManager {
     }
 
     private void fillEimQueue() {
-        TimerManager.getInstance().execute(new EventManagerTask());  //call new thread to fill up readied instances queue
+        Scheduler.getInstance().execute(new EventManagerTask());  //call new thread to fill up readied instances queue
     }
 
     private EventInstanceManager getReadyInstance() {

@@ -24,7 +24,7 @@ package server.events.gm;
 
 import client.Character;
 import constants.id.MapId;
-import server.TimerManager;
+import server.Scheduler;
 import tools.PacketCreator;
 
 import java.util.concurrent.ScheduledFuture;
@@ -41,7 +41,7 @@ public class Fitness {
 
     public Fitness(final Character chr) {
         this.chr = chr;
-        this.schedule = TimerManager.getInstance().schedule(() -> {
+        this.schedule = Scheduler.getInstance().schedule(() -> {
             if (MapId.isPhysicalFitness(chr.getMapId())) {
                 chr.changeMap(chr.getMap().getReturnMap());
             }
@@ -79,7 +79,7 @@ public class Fitness {
     }
 
     public void checkAndMessage() {
-        this.schedulemsg = TimerManager.getInstance().register(() -> {
+        this.schedulemsg = Scheduler.getInstance().register(() -> {
             if (chr.getFitness() == null) {
                 resetTimes();
             }

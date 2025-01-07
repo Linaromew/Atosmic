@@ -6,24 +6,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
-import java.lang.management.ManagementFactory;
 
 import io.netty.util.concurrent.ScheduledFuture;
 
-public class TimerManager
+public class Scheduler
 {
-    private static final Logger log = LoggerFactory.getLogger(TimerManager.class);
-    private static final TimerManager instance = new TimerManager();
+    private static final Logger log = LoggerFactory.getLogger(Scheduler.class);
+    private static final Scheduler instance = new Scheduler();
     private NioEventLoopGroup eventLoopGroup = new NioEventLoopGroup(1);
     private EventLoop eventLoop;
 
-    public static TimerManager getInstance() {
+    public static Scheduler getInstance() {
         return instance;
     }
 
-    private TimerManager() {
+    private Scheduler() {
         System.out.println("Initializing TimerManager");
         eventLoop = eventLoopGroup.next();
     }

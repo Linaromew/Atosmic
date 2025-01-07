@@ -27,7 +27,7 @@ import constants.id.ItemId;
 import constants.id.MapId;
 import net.server.world.Party;
 import server.ItemInformationProvider;
-import server.TimerManager;
+import server.Scheduler;
 import tools.PacketCreator;
 
 import java.util.concurrent.ScheduledFuture;
@@ -83,7 +83,7 @@ public class Pyramid extends PartyQuest {
         if (gaugeSchedule == null) {
             gauge = 100;
             count = 0;
-            gaugeSchedule = TimerManager.getInstance().register(() -> {
+            gaugeSchedule = Scheduler.getInstance().register(() -> {
                 gauge -= decrease;
                 if (gauge <= 0) {
                     warp(MapId.NETTS_PYRAMID);
@@ -137,7 +137,7 @@ public class Pyramid extends PartyQuest {
             value = 120;
         }
 
-        timer = TimerManager.getInstance().schedule(() -> {
+        timer = Scheduler.getInstance().schedule(() -> {
             stage++;
             warp(map + (stage * 100));//Should work :D
         }, SECONDS.toMillis(value));//, 4000

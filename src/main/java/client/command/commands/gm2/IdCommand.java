@@ -5,7 +5,7 @@ import client.Client;
 import client.command.Command;
 import constants.game.NpcChat;
 import constants.id.NpcId;
-import server.TimerManager;
+import server.Scheduler;
 import tools.exceptions.IdTypeNotSupportedException;
 
 import java.io.IOException;
@@ -125,7 +125,7 @@ public class IdCommand extends Command {
             }
         };
 
-        TimerManager.getInstance().execute(queryRunnable);
+        Scheduler.getInstance().execute(queryRunnable);
     }
 
     private void populateIdMap(String type) throws IdTypeNotSupportedException, IOException {

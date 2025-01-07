@@ -27,7 +27,7 @@ import client.Character;
 import client.Client;
 import client.command.Command;
 import net.server.Server;
-import server.TimerManager;
+import server.Scheduler;
 
 public class ServerRemoveWorldCommand extends Command {
     {
@@ -44,7 +44,7 @@ public class ServerRemoveWorldCommand extends Command {
             return;
         }
 
-        TimerManager.getInstance().execute(() -> {
+        Scheduler.getInstance().execute(() -> {
             if (Server.getInstance().removeWorld()) {
                 if (player.isLoggedinWorld()) {
                     player.dropMessage(5, "Successfully removed a world. Current world count: " + Server.getInstance().getWorldsSize() + ".");

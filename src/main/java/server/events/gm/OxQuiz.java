@@ -26,7 +26,7 @@ import provider.DataProvider;
 import provider.DataProviderFactory;
 import provider.DataTool;
 import provider.wz.WZFiles;
-import server.TimerManager;
+import server.Scheduler;
 import server.maps.MapleMap;
 import tools.PacketCreator;
 import tools.Randomizer;
@@ -69,7 +69,7 @@ public final class OxQuiz {
         }
         final int number = gm;
         map.broadcastMessage(PacketCreator.showOXQuiz(round, question, true));
-        TimerManager.getInstance().schedule(() -> {
+        Scheduler.getInstance().schedule(() -> {
             map.broadcastMessage(PacketCreator.showOXQuiz(round, question, true));
             List<Character> chars = new ArrayList<>(map.getCharacters());
 

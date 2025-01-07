@@ -83,8 +83,8 @@ import net.AbstractPacketHandler;
 import net.packet.InPacket;
 import net.server.PlayerBuffValueHolder;
 import scripting.AbstractPlayerInteraction;
+import server.Scheduler;
 import server.StatEffect;
-import server.TimerManager;
 import server.life.Element;
 import server.life.ElementalEffectiveness;
 import server.life.MobSkill;
@@ -229,7 +229,7 @@ public abstract class AbstractDealDamageHandler extends AbstractPacketHandler {
                             if (mapitem.isPickedUp()) {
                                 return;
                             }
-                            TimerManager.getInstance().schedule(() -> {
+                            Scheduler.getInstance().schedule(() -> {
                                 mapitem.lockItem();
                                 try {
                                     if (mapitem.isPickedUp()) {
@@ -334,7 +334,7 @@ public abstract class AbstractDealDamageHandler extends AbstractPacketHandler {
                                         eachdf = eachd;
                                     }
 
-                                    TimerManager.getInstance().schedule(() -> map.spawnMesoDrop(Math.min((int) Math.max(((double) eachdf / (double) 20000) * (double) maxmeso, 1), maxmeso), new Point((int) (monster.getPosition().getX() + Randomizer.nextInt(100) - 50), (int) (monster.getPosition().getY())), monster, player, true, (byte) 2), delay);
+                                    Scheduler.getInstance().schedule(() -> map.spawnMesoDrop(Math.min((int) Math.max(((double) eachdf / (double) 20000) * (double) maxmeso, 1), maxmeso), new Point((int) (monster.getPosition().getX() + Randomizer.nextInt(100) - 50), (int) (monster.getPosition().getY())), monster, player, true, (byte) 2), delay);
                                     delay += 100;
                                 }
                             }
@@ -583,7 +583,7 @@ public abstract class AbstractDealDamageHandler extends AbstractPacketHandler {
         }
 
         if (animationTime > 0) { // be sure to only use LIMITED ATTACKS with animation time here
-            TimerManager.getInstance().schedule(() -> {
+            Scheduler.getInstance().schedule(() -> {
                 map.broadcastMessage(PacketCreator.damageMonster(monster.getObjectId(), damage), monster.getPosition());
                 map.damageMonster(attacker, monster, damage);
             }, animationTime);

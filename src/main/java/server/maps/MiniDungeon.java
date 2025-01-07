@@ -20,14 +20,12 @@
 package server.maps;
 
 import client.Character;
-import server.TimerManager;
+import server.Scheduler;
 import tools.PacketCreator;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -45,7 +43,7 @@ public class MiniDungeon {
         baseMap = base;
         expireTime = SECONDS.toMillis(timeLimit);
 
-        timeoutTask = TimerManager.getInstance().schedule(() -> close(), expireTime);
+        timeoutTask = Scheduler.getInstance().schedule(() -> close(), expireTime);
 
         expireTime += System.currentTimeMillis();
     }

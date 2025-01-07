@@ -23,7 +23,7 @@ package server.maps;
 
 import client.Character;
 import net.server.Server;
-import server.TimerManager;
+import server.Scheduler;
 import tools.PacketCreator;
 
 import java.util.List;
@@ -59,7 +59,7 @@ public class MapleTVEffect {
             } else if (type == 5) {
                 delay = 60000;
             }
-            TimerManager.getInstance().schedule(() -> broadcastTV(false, userWorld, null, null, -1, null), delay);
+            Scheduler.getInstance().schedule(() -> broadcastTV(false, userWorld, null, null, -1, null), delay);
         } else {
             server.broadcastMessage(userWorld, PacketCreator.removeTV());
         }

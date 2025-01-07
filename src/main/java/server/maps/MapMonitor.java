@@ -21,7 +21,7 @@
 */
 package server.maps;
 
-import server.TimerManager;
+import server.Scheduler;
 
 import java.util.concurrent.ScheduledFuture;
 
@@ -33,7 +33,7 @@ public class MapMonitor {
     public MapMonitor(final MapleMap map, String portal) {
         this.map = map;
         this.portal = map.getPortal(portal);
-        this.monitorSchedule = TimerManager.getInstance().register(() -> {
+        this.monitorSchedule = Scheduler.getInstance().register(() -> {
             if (map.getCharacters().size() < 1) {
                 cancelAction();
             }

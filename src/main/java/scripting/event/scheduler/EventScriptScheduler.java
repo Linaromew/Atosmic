@@ -21,7 +21,7 @@ package scripting.event.scheduler;
 
 import config.YamlConfig;
 import net.server.Server;
-import server.TimerManager;
+import server.Scheduler;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -76,7 +76,7 @@ public class EventScriptScheduler
 
     public void registerEntry(final Runnable scheduledAction, final long duration)
     {
-        TimerManager.getInstance().execute(() ->
+        Scheduler.getInstance().execute(() ->
         {
             idleProcs = 0;
             if (schedulerTask == null)
@@ -86,7 +86,7 @@ public class EventScriptScheduler
                     return;
                 }
 
-                schedulerTask = TimerManager.getInstance().register(monitorTask, YamlConfig.config.server.MOB_STATUS_MONITOR_PROC, YamlConfig.config.server.MOB_STATUS_MONITOR_PROC);
+                schedulerTask = Scheduler.getInstance().register(monitorTask, YamlConfig.config.server.MOB_STATUS_MONITOR_PROC, YamlConfig.config.server.MOB_STATUS_MONITOR_PROC);
             }
 
             registeredEntries.put(scheduledAction, Server.getInstance().getCurrentTime() + duration);
@@ -95,7 +95,7 @@ public class EventScriptScheduler
 
     public void cancelEntry(final Runnable scheduledAction)
     {
-        TimerManager.getInstance().execute(() ->
+        Scheduler.getInstance().execute(() ->
         {
             registeredEntries.remove(scheduledAction);
         });
@@ -103,7 +103,7 @@ public class EventScriptScheduler
 
     public void dispose()
     {
-        TimerManager.getInstance().execute(() ->
+        Scheduler.getInstance().execute(() ->
         {
             if (schedulerTask != null)
             {

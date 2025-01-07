@@ -63,8 +63,8 @@ import org.apache.logging.log4j.LogManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import server.CashShop.CashItemFactory;
+import server.Scheduler;
 import server.SkillbookInformationProvider;
-import server.TimerManager;
 import server.expeditions.ExpeditionBossLog;
 import server.life.PlayerNPC;
 import server.quest.Quest;
@@ -843,7 +843,7 @@ public class Server {
     }
 
     private void initializeTimelyTasks(ChannelDependencies channelDependencies) {
-        TimerManager tMan = TimerManager.getInstance();
+        Scheduler tMan = Scheduler.getInstance();
 
         //tMan.register(tMan.purge(), YamlConfig.config.server.PURGING_INTERVAL);//Purging ftw...
         disconnectIdlesOnLoginTask();
@@ -1656,7 +1656,7 @@ public class Server {
     }
 
     private void disconnectIdlesOnLoginTask() {
-        TimerManager.getInstance().register(() -> disconnectIdlesOnLoginState(), 300000);
+        Scheduler.getInstance().register(() -> disconnectIdlesOnLoginState(), 300000);
     }
 
     public final Runnable shutdown(final boolean restart) {//no player should be online when trying to shutdown!
@@ -1687,7 +1687,7 @@ public class Server {
         resetServerWorlds();
 
         //TimerManager.getInstance().purge();
-        TimerManager.getInstance().stop();
+        Scheduler.getInstance().stop();
 
         log.info("Worlds and channels are offline.");
         loginServer.stop();

@@ -23,7 +23,7 @@ import client.Character;
 import constants.game.GameConstants;
 import constants.id.ItemId;
 import constants.id.MapId;
-import server.TimerManager;
+import server.Scheduler;
 import server.expeditions.Expedition;
 import server.expeditions.ExpeditionType;
 import server.maps.MapleMap;
@@ -83,11 +83,11 @@ public class AriantColiseum {
             mc.sendPacket(PacketCreator.updateAriantPQRanking(score));
         }
 
-        setAriantScoreBoard(TimerManager.getInstance().schedule(() -> showArenaResults(), pqTimerBoard));
+        setAriantScoreBoard(Scheduler.getInstance().schedule(() -> showArenaResults(), pqTimerBoard));
 
-        setArenaFinish(TimerManager.getInstance().schedule(() -> enterKingsRoom(), pqTimer));
+        setArenaFinish(Scheduler.getInstance().schedule(() -> enterKingsRoom(), pqTimer));
 
-        setArenaUpdate(TimerManager.getInstance().register(() -> broadcastAriantScoreUpdate(), 500, 500));
+        setArenaUpdate(Scheduler.getInstance().register(() -> broadcastAriantScoreUpdate(), 500, 500));
     }
 
     private void setArenaUpdate(ScheduledFuture<?> ariantUpdate) {

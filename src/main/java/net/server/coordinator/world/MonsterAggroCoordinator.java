@@ -22,7 +22,7 @@ package net.server.coordinator.world;
 import client.Character;
 import config.YamlConfig;
 import net.server.Server;
-import server.TimerManager;
+import server.Scheduler;
 import server.life.Monster;
 import server.maps.MapleMap;
 import tools.Pair;
@@ -36,8 +36,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author Ronan
@@ -91,7 +89,7 @@ public class MonsterAggroCoordinator
             return;
         }
 
-        aggroMonitor = TimerManager.getInstance().register(() ->
+        aggroMonitor = Scheduler.getInstance().register(() ->
         {
             runAggroUpdate(1);
             runSortLeadingCharactersAggro();

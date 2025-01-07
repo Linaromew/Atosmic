@@ -31,7 +31,7 @@ import net.server.Server;
 import net.server.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import server.TimerManager;
+import server.Scheduler;
 import server.life.Monster;
 import server.maps.MapleMap;
 import tools.PacketCreator;
@@ -48,8 +48,6 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -139,7 +137,7 @@ public class Expedition {
         final Expedition exped = this;
         startTime = System.currentTimeMillis() + MINUTES.toMillis(type.getRegistrationMinutes());
 
-        schedule = TimerManager.getInstance().schedule(() -> {
+        schedule = Scheduler.getInstance().schedule(() -> {
             if (registering) {
                 exped.removeChannelExpedition(startMap.getChannelServer());
                 if (!silent) {

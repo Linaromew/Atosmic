@@ -62,8 +62,8 @@ import net.server.task.WeddingReservationTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scripting.event.EventInstanceManager;
+import server.Scheduler;
 import server.Storage;
-import server.TimerManager;
 import server.maps.AbstractMapObject;
 import server.maps.HiredMerchant;
 import server.maps.MapleMap;
@@ -225,7 +225,7 @@ public class World {
             cashItemBought.add(new LinkedHashMap<>());
         }
 
-        TimerManager tman = TimerManager.getInstance();
+        Scheduler tman = Scheduler.getInstance();
         petsSchedule = tman.register(new PetFullnessTask(this), MINUTES.toMillis(1), MINUTES.toMillis(1));
         srvMessagesSchedule = tman.register(new ServerMessageTask(this), SECONDS.toMillis(10), SECONDS.toMillis(10));
         mountsSchedule = tman.register(new MountTirednessTask(this), MINUTES.toMillis(1), MINUTES.toMillis(1));

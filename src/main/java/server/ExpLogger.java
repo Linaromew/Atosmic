@@ -9,11 +9,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ThreadFactory;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -74,7 +71,7 @@ public class ExpLogger {
         // Suppose TimerManager's method is:
         // register(Runnable task, long repeatMillis, long initialDelayMillis)
         long periodMs = SECONDS.toMillis(EXP_LOGGER_THREAD_SLEEP_DURATION_SECONDS);
-        flushTask = TimerManager.getInstance().register(saveExpLoggerToDBRunnable, periodMs, periodMs);
+        flushTask = Scheduler.getInstance().register(saveExpLoggerToDBRunnable, periodMs, periodMs);
 
         // Optionally add a shutdown hook that performs a final flush
         // But let's do it via TimerManager's single thread instead of new thread
@@ -90,7 +87,7 @@ public class ExpLogger {
         }
 
         // Now do a final flush on the same single thread:
-        TimerManager.getInstance().execute(() -> {
+        Scheduler.getInstance().execute(() -> {
             saveExpLoggerToDBRunnable.run();
         });
 

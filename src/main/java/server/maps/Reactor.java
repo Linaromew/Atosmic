@@ -27,7 +27,7 @@ import net.packet.Packet;
 import net.server.services.task.channel.OverallService;
 import net.server.services.type.ChannelServices;
 import scripting.reactor.ReactorScriptManager;
-import server.TimerManager;
+import server.Scheduler;
 import server.partyquest.GuardianSpawnPoint;
 import tools.PacketCreator;
 import tools.Pair;
@@ -35,8 +35,6 @@ import tools.Pair;
 import java.awt.*;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author Lerk
@@ -212,7 +210,7 @@ public class Reactor extends AbstractMapObject {
         if (timeOut > -1) {
             final byte nextState = stats.getTimeoutState(state);
 
-            timeoutTask = TimerManager.getInstance().schedule(() -> {
+            timeoutTask = Scheduler.getInstance().schedule(() -> {
                 timeoutTask = null;
                 tryForceHitReactor(nextState);
             }, timeOut);
@@ -220,7 +218,7 @@ public class Reactor extends AbstractMapObject {
     }
 
     public void delayedHitReactor(final Client c, long delay) {
-        TimerManager.getInstance().schedule(() -> hitReactor(c), delay);
+        Scheduler.getInstance().schedule(() -> hitReactor(c), delay);
     }
 
     public void hitReactor(Client c) {

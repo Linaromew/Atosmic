@@ -37,7 +37,7 @@ import net.server.world.World;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scripting.event.EventScriptManager;
-import server.TimerManager;
+import server.Scheduler;
 import server.events.gm.Event;
 import server.expeditions.Expedition;
 import server.expeditions.ExpeditionType;
@@ -66,7 +66,6 @@ import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import static java.util.concurrent.TimeUnit.HOURS;
@@ -571,7 +570,7 @@ public final class Channel {
         if (this.dojoTask[slot] != null) {
             this.dojoTask[slot].cancel(false);
         }
-        this.dojoTask[slot] = TimerManager.getInstance().schedule(() -> {
+        this.dojoTask[slot] = Scheduler.getInstance().schedule(() -> {
             final int delta = (dojoMapId) % 100;
             final int dojoBaseMap = (slot < 5) ? MapId.DOJO_PARTY_BASE : MapId.DOJO_SOLO_BASE;
             Party party = null;
@@ -767,7 +766,7 @@ public final class Channel {
 
         ongoingStartTime = System.currentTimeMillis();
         if (weddingId != null) {
-            ScheduledFuture<?> weddingTask = TimerManager.getInstance().schedule(() -> closeOngoingWedding(cathedral), MINUTES.toMillis(YamlConfig.config.server.WEDDING_RESERVATION_TIMEOUT));
+            ScheduledFuture<?> weddingTask = Scheduler.getInstance().schedule(() -> closeOngoingWedding(cathedral), MINUTES.toMillis(YamlConfig.config.server.WEDDING_RESERVATION_TIMEOUT));
 
             if (cathedral) {
                 cathedralReservationTask = weddingTask;

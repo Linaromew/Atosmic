@@ -27,7 +27,7 @@ import client.Character;
 import client.Client;
 import client.command.Command;
 import net.server.Server;
-import server.TimerManager;
+import server.Scheduler;
 
 public class ServerAddChannelCommand extends Command {
     {
@@ -45,7 +45,7 @@ public class ServerAddChannelCommand extends Command {
 
         final int worldid = Integer.parseInt(params[0]);
 
-        TimerManager.getInstance().execute(() -> {
+        Scheduler.getInstance().execute(() -> {
             int chid = Server.getInstance().addChannel(worldid);
             if (player.isLoggedinWorld()) {
                 if (chid >= 0) {

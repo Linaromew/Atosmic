@@ -21,7 +21,7 @@ package net.server.services;
 
 import config.YamlConfig;
 import net.server.Server;
-import server.TimerManager;
+import server.Scheduler;
 import tools.Pair;
 
 import java.util.Collections;
@@ -31,8 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author Ronan
@@ -95,7 +93,7 @@ public abstract class BaseScheduler {
     protected void registerEntry(Object key, Runnable removalAction, long duration) {
         idleProcs = 0;
         if (schedulerTask == null) {
-            schedulerTask = TimerManager.getInstance().register(monitorTask, YamlConfig.config.server.MOB_STATUS_MONITOR_PROC, YamlConfig.config.server.MOB_STATUS_MONITOR_PROC);
+            schedulerTask = Scheduler.getInstance().register(monitorTask, YamlConfig.config.server.MOB_STATUS_MONITOR_PROC, YamlConfig.config.server.MOB_STATUS_MONITOR_PROC);
         }
 
         registeredEntries.put(key, new Pair<>(removalAction, Server.getInstance().getCurrentTime() + duration));

@@ -27,7 +27,7 @@ import client.Character;
 import client.Client;
 import client.command.Command;
 import net.server.Server;
-import server.TimerManager;
+import server.Scheduler;
 
 public class ServerAddWorldCommand extends Command {
     {
@@ -38,7 +38,7 @@ public class ServerAddWorldCommand extends Command {
     public void execute(Client c, String[] params) {
         final Character player = c.getPlayer();
 
-        TimerManager.getInstance().execute(() -> {
+        Scheduler.getInstance().execute(() -> {
             int wid = Server.getInstance().addWorld();
 
             if (player.isLoggedinWorld()) {

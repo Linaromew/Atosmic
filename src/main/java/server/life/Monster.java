@@ -55,7 +55,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scripting.event.EventInstanceManager;
 import server.StatEffect;
-import server.TimerManager;
+import server.Scheduler;
 import server.life.LifeFactory.BanishInfo;
 import server.loot.LootManager;
 import server.maps.AbstractAnimatedMapObject;
@@ -83,8 +83,6 @@ import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class Monster extends AbstractLoadedLife {
     private static final Logger log = LoggerFactory.getLogger(Monster.class);
@@ -777,7 +775,7 @@ public class Monster extends AbstractLoadedLife {
             if (toSpawn.size() > 0) {
                 final EventInstanceManager eim = this.getMap().getEventInstance();
 
-                TimerManager.getInstance().schedule(() -> {
+                Scheduler.getInstance().schedule(() -> {
                     Character controller = lastController.getLeft();
                     boolean aggro = lastController.getRight();
 
@@ -833,7 +831,7 @@ public class Monster extends AbstractLoadedLife {
 
     public void dropFromFriendlyMonster(long delay) {
         final Monster m = this;
-        monsterItemDrop = TimerManager.getInstance().register(() -> {
+        monsterItemDrop = Scheduler.getInstance().register(() -> {
             if (!m.isAlive()) {
                 if (monsterItemDrop != null) {
                     monsterItemDrop.cancel(false);

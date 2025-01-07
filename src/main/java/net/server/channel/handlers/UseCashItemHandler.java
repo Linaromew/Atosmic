@@ -55,9 +55,9 @@ import net.server.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import server.ItemInformationProvider;
+import server.Scheduler;
 import server.Shop;
 import server.ShopFactory;
-import server.TimerManager;
 import server.maps.AbstractMapObject;
 import server.maps.FieldLimit;
 import server.maps.Kite;
@@ -476,7 +476,7 @@ public final class UseCashItemHandler extends AbstractPacketHandler {
 
             final int world = c.getWorld();
             Server.getInstance().broadcastMessage(world, PacketCreator.getAvatarMega(player, medal, c.getChannel(), itemId, strLines, (p.readByte() != 0)));
-            TimerManager.getInstance().schedule(() -> Server.getInstance().broadcastMessage(world, PacketCreator.byeAvatarMega()), SECONDS.toMillis(10));
+            Scheduler.getInstance().schedule(() -> Server.getInstance().broadcastMessage(world, PacketCreator.byeAvatarMega()), SECONDS.toMillis(10));
             remove(c, position, itemId);
         } else if (itemType == 540) {
             p.readByte();
@@ -607,7 +607,7 @@ public final class UseCashItemHandler extends AbstractPacketHandler {
             remove(c, position, itemId);
 
             final Client client = c;
-            TimerManager.getInstance().schedule(() -> {
+            Scheduler.getInstance().schedule(() -> {
                 if (!player.isLoggedin()) {
                     return;
                 }

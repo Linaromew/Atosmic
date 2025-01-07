@@ -23,7 +23,7 @@ package server.events.gm;
 
 import client.Character;
 import constants.id.MapId;
-import server.TimerManager;
+import server.Scheduler;
 import server.maps.MapleMap;
 import tools.PacketCreator;
 
@@ -66,7 +66,7 @@ public class Snowball {
             }
         }
         hittable = true;
-        TimerManager.getInstance().schedule(() -> {
+        Scheduler.getInstance().schedule(() -> {
             if (map.getSnowball(team).getPosition() > map.getSnowball(team == 0 ? 1 : 0).getPosition()) {
                 for (Character chr : characters) {
                     if (chr != null) {
@@ -115,7 +115,7 @@ public class Snowball {
                 if (this.snowmanhp - damage < 0) {
                     this.snowmanhp = 0;
 
-                    TimerManager.getInstance().schedule(() -> {
+                    Scheduler.getInstance().schedule(() -> {
                         setSnowmanHP(7500);
                         message(5);
                     }, 10000);
@@ -156,7 +156,7 @@ public class Snowball {
     }
 
     public void warpOut() {
-        TimerManager.getInstance().schedule(() -> {
+        Scheduler.getInstance().schedule(() -> {
             if (winner) {
                 map.warpOutByTeam(team, MapId.EVENT_WINNER);
             } else {

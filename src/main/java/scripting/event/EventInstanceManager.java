@@ -34,8 +34,8 @@ import org.slf4j.LoggerFactory;
 import scripting.AbstractPlayerInteraction;
 import scripting.event.scheduler.EventScriptScheduler;
 import server.ItemInformationProvider;
+import server.Scheduler;
 import server.StatEffect;
-import server.TimerManager;
 import server.expeditions.Expedition;
 import server.life.LifeFactory;
 import server.life.Monster;
@@ -279,7 +279,7 @@ public class EventInstanceManager {
             chr.sendPacket(PacketCreator.getClock((int) (time / 1000)));
         }
 
-        event_schedule = TimerManager.getInstance().schedule(() -> {
+        event_schedule = Scheduler.getInstance().schedule(() -> {
             dismissEventTimer();
 
             try {
@@ -296,7 +296,7 @@ public class EventInstanceManager {
                 long nextTime = getTimeLeft() + time;
                 eventTime += time;
 
-                event_schedule = TimerManager.getInstance().schedule(() -> {
+                event_schedule = Scheduler.getInstance().schedule(() -> {
                     dismissEventTimer();
 
                     try {
@@ -490,7 +490,7 @@ public class EventInstanceManager {
     }
 
     public void playerKilled(final Character chr) {
-        TimerManager.getInstance().execute(() -> {
+        Scheduler.getInstance().execute(() -> {
             try {
                 invokeScriptFunction("playerDead", EventInstanceManager.this, chr);
             } catch (ScriptException | NoSuchMethodException ex) {
@@ -598,7 +598,7 @@ public class EventInstanceManager {
             em.disposeInstance(name);
         }
 
-        TimerManager.getInstance().schedule(() -> {
+        Scheduler.getInstance().schedule(() -> {
             mapManager.dispose();   // issues from instantly disposing some event objects found thanks to MedicOP
             mapManager = null;
             em = null;

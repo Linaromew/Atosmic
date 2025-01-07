@@ -59,7 +59,7 @@ import scripting.npc.NPCScriptManager;
 import scripting.quest.QuestActionManager;
 import scripting.quest.QuestScriptManager;
 import server.MapleLeafLogger;
-import server.TimerManager;
+import server.Scheduler;
 import server.life.Monster;
 import server.maps.FieldLimit;
 import server.maps.MapleMap;
@@ -958,7 +958,7 @@ public class Client extends ChannelInboundHandlerAdapter {
 
     public final void disconnect(final boolean shutdown, final boolean cashshop) {
         if (canDisconnect()) {
-            TimerManager.getInstance().execute(() -> disconnectInternal(shutdown, cashshop));
+            Scheduler.getInstance().execute(() -> disconnectInternal(shutdown, cashshop));
         }
     }
 
@@ -1156,7 +1156,7 @@ public class Client extends ChannelInboundHandlerAdapter {
     public void checkIfIdle(final IdleStateEvent event) {
         final long pingedAt = System.currentTimeMillis();
         sendPacket(PacketCreator.getPing());
-        TimerManager.getInstance().schedule(() -> {
+        Scheduler.getInstance().schedule(() -> {
             try {
                 if (lastPong < pingedAt) {
                     if (ioChannel.isActive()) {

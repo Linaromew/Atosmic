@@ -29,7 +29,7 @@ import client.inventory.Item;
 import constants.inventory.ItemConstants;
 import scripting.AbstractPlayerInteraction;
 import server.ItemInformationProvider;
-import server.TimerManager;
+import server.Scheduler;
 import server.life.LifeFactory;
 import server.life.Monster;
 import server.maps.MapMonitor;
@@ -192,7 +192,7 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
 
             dropPos.x -= (12 * items.size());
 
-            sprayTask = TimerManager.getInstance().register(() -> {
+            sprayTask = Scheduler.getInstance().register(() -> {
                 if (dropItems.isEmpty()) {
                     sprayTask.cancel(false);
                     return;
@@ -307,7 +307,7 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
      */
     public void summonBossDelayed(final int mobId, final int delayMs, final int x, final int y, final String bgm,
                                   final String summonMessage) {
-        TimerManager.getInstance().schedule(() -> {
+        Scheduler.getInstance().schedule(() -> {
             summonBoss(mobId, x, y, bgm, summonMessage);
         }, delayMs);
     }

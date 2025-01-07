@@ -100,17 +100,10 @@ import org.slf4j.LoggerFactory;
 import scripting.AbstractPlayerInteraction;
 import scripting.event.EventInstanceManager;
 import scripting.item.ItemScriptManager;
-import server.CashShop;
-import server.ExpLogger;
+import server.*;
 import server.ExpLogger.ExpLogRecord;
-import server.ItemInformationProvider;
 import server.ItemInformationProvider.ScriptedItem;
-import server.Marriage;
-import server.Shop;
-import server.StatEffect;
-import server.Storage;
-import server.TimerManager;
-import server.Trade;
+import server.Scheduler;
 import server.events.Events;
 import server.events.RescueGaga;
 import server.events.gm.Fitness;
@@ -1104,7 +1097,7 @@ public class Character extends AbstractCharacterObject {
             }
         }
 
-        TimerManager.getInstance().schedule(new Runnable() {    // need to delay to ensure clientside has finished reloading character data
+        Scheduler.getInstance().schedule(new Runnable() {    // need to delay to ensure clientside has finished reloading character data
             @Override
             public void run() {
                 Character thisChr = Character.this;
@@ -1830,7 +1823,7 @@ public class Character extends AbstractCharacterObject {
             final int skilllevel = getSkillLevel(BerserkX);
             if (skilllevel > 0) {
                 berserk = chr.getHp() * 100 / chr.getCurrentMaxHp() < BerserkX.getEffect(skilllevel).getX();
-                berserkSchedule = TimerManager.getInstance().register(new Runnable() {
+                berserkSchedule = Scheduler.getInstance().register(new Runnable() {
                     @Override
                     public void run() {
                         if (awayFromWorld.get()) {
@@ -2441,7 +2434,7 @@ public class Character extends AbstractCharacterObject {
             stopChairTask();
         }
 
-        chairRecoveryTask = TimerManager.getInstance().register(new Runnable() {
+        chairRecoveryTask = Scheduler.getInstance().register(new Runnable() {
             @Override
             public void run() {
                 updateChairHealStats();
@@ -2476,7 +2469,7 @@ public class Character extends AbstractCharacterObject {
     private void startExtraTaskInternal(final byte healHP, final byte healMP, final short healInterval) {
         extraRecInterval = healInterval;
 
-        extraRecoveryTask = TimerManager.getInstance().register(new Runnable() {
+        extraRecoveryTask = Scheduler.getInstance().register(new Runnable() {
             @Override
             public void run() {
                 if (getBuffSource(BuffStat.HPREC) == -1 && getBuffSource(BuffStat.MPREC) == -1) {
@@ -2736,7 +2729,7 @@ public class Character extends AbstractCharacterObject {
 
     public void diseaseExpireTask() {
         if (diseaseExpireTask == null) {
-            diseaseExpireTask = TimerManager.getInstance().register(new Runnable() {
+            diseaseExpireTask = Scheduler.getInstance().register(new Runnable() {
                 @Override
                 public void run() {
                     Set<Disease> toExpire = new LinkedHashSet<>();
@@ -2766,7 +2759,7 @@ public class Character extends AbstractCharacterObject {
 
     public void buffExpireTask() {
         if (buffExpireTask == null) {
-            buffExpireTask = TimerManager.getInstance().register(new Runnable() {
+            buffExpireTask = Scheduler.getInstance().register(new Runnable() {
                 @Override
                 public void run() {
                     Set<Entry<Integer, Long>> es;
@@ -2798,7 +2791,7 @@ public class Character extends AbstractCharacterObject {
 
     public void skillCooldownTask() {
         if (skillCooldownTask == null) {
-            skillCooldownTask = TimerManager.getInstance().register(new Runnable() {
+            skillCooldownTask = Scheduler.getInstance().register(new Runnable() {
                 @Override
                 public void run() {
                     Set<Entry<Integer, CooldownValueHolder>> es;
@@ -2827,7 +2820,7 @@ public class Character extends AbstractCharacterObject {
 
     public void expirationTask() {
         if (itemExpireTask == null) {
-            itemExpireTask = TimerManager.getInstance().register(new Runnable() {
+            itemExpireTask = Scheduler.getInstance().register(new Runnable() {
                 @Override
                 public void run() {
                     boolean deletedCoupon = false;
@@ -4135,7 +4128,7 @@ public class Character extends AbstractCharacterObject {
             if (bHealingLvl > 0) {
                 final StatEffect healEffect = bHealing.getEffect(bHealingLvl);
                 int healInterval = (int) SECONDS.toMillis(healEffect.getX());
-                beholderHealingSchedule = TimerManager.getInstance().register(new Runnable() {
+                beholderHealingSchedule = Scheduler.getInstance().register(new Runnable() {
                     @Override
                     public void run() {
                         if (awayFromWorld.get()) {
@@ -4153,7 +4146,7 @@ public class Character extends AbstractCharacterObject {
             if (getSkillLevel(bBuff) > 0) {
                 final StatEffect buffEffect = bBuff.getEffect(getSkillLevel(bBuff));
                 int buffInterval = (int) SECONDS.toMillis(buffEffect.getX());
-                beholderBuffSchedule = TimerManager.getInstance().register(new Runnable() {
+                beholderBuffSchedule = Scheduler.getInstance().register(new Runnable() {
                     @Override
                     public void run() {
                         if (awayFromWorld.get()) {
@@ -4175,7 +4168,7 @@ public class Character extends AbstractCharacterObject {
                 recoveryTask.cancel(false);
             }
 
-            recoveryTask = TimerManager.getInstance().register(new Runnable() {
+            recoveryTask = Scheduler.getInstance().register(new Runnable() {
                 @Override
                 public void run() {
                     if (getBuffSource(BuffStat.RECOVERY) == -1) {
@@ -5545,7 +5538,7 @@ public class Character extends AbstractCharacterObject {
         Skill energycharge = isCygnus() ? SkillFactory.getSkill(ThunderBreaker.ENERGY_CHARGE) : SkillFactory.getSkill(Marauder.ENERGY_CHARGE);
         StatEffect ceffect;
         ceffect = energycharge.getEffect(getSkillLevel(energycharge));
-        TimerManager tMan = TimerManager.getInstance();
+        Scheduler tMan = Scheduler.getInstance();
         if (energybar < 10000) {
             energybar += 102;
             if (energybar > 10000) {
@@ -5900,7 +5893,7 @@ public class Character extends AbstractCharacterObject {
             if (level == maxClassLevel) {
                 if (!this.isGM()) {
                     if (YamlConfig.config.server.PLAYERNPC_AUTODEPLOY) {
-                        TimerManager.getInstance().execute(new Runnable() {
+                        Scheduler.getInstance().execute(new Runnable() {
                             @Override
                             public void run() {
                                 PlayerNPC.spawnPlayerNPC(GameConstants.getHallOfFameMapid(job), Character.this);
@@ -5975,7 +5968,7 @@ public class Character extends AbstractCharacterObject {
                 }
             };
 
-            TimerManager.getInstance().execute(r);
+            Scheduler.getInstance().execute(r);
         }
 
         guildUpdate();
@@ -7063,7 +7056,7 @@ public class Character extends AbstractCharacterObject {
         if (dragonBloodSchedule != null) {
             dragonBloodSchedule.cancel(false);
         }
-        dragonBloodSchedule = TimerManager.getInstance().register(new Runnable() {
+        dragonBloodSchedule = Scheduler.getInstance().register(new Runnable() {
             @Override
             public void run() {
                 if (awayFromWorld.get()) {
@@ -8052,7 +8045,7 @@ public class Character extends AbstractCharacterObject {
     public void sendPolice(int greason, String reason, int duration) {
         sendPacket(PacketCreator.sendPolice(String.format("You have been blocked by the#b %s Police for %s.#k", "Cosmic", reason)));
         this.isbanned = true;
-        TimerManager.getInstance().schedule(new Runnable() {
+        Scheduler.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
                 client.disconnect(false, false);
@@ -8946,7 +8939,7 @@ public class Character extends AbstractCharacterObject {
     public void startMapEffect(String msg, int itemId, int duration) {
         final MapEffect mapEffect = new MapEffect(msg, itemId);
         sendPacket(mapEffect.makeStartData());
-        TimerManager.getInstance().schedule(new Runnable() {
+        Scheduler.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
                 sendPacket(mapEffect.makeDestroyData());
@@ -9143,7 +9136,7 @@ public class Character extends AbstractCharacterObject {
     public void questExpirationTask() {
         if (!questExpirations.isEmpty()) {
             if (questExpireTask == null) {
-                questExpireTask = TimerManager.getInstance().register(new Runnable() {
+                questExpireTask = Scheduler.getInstance().register(new Runnable() {
                     @Override
                     public void run() {
                         runQuestExpireTask();
@@ -9178,7 +9171,7 @@ public class Character extends AbstractCharacterObject {
 
     private void registerQuestExpire(Quest quest, long time) {
         if (questExpireTask == null) {
-            questExpireTask = TimerManager.getInstance().register(new Runnable() {
+            questExpireTask = Scheduler.getInstance().register(new Runnable() {
                 @Override
                 public void run() {
                     runQuestExpireTask();
@@ -9354,7 +9347,7 @@ public class Character extends AbstractCharacterObject {
 
         this.ban(reason);
         sendPacket(PacketCreator.sendPolice(String.format("You have been blocked by the#b %s Police for HACK reason.#k", "Cosmic")));
-        TimerManager.getInstance().schedule(new Runnable() {
+        Scheduler.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
                 client.disconnect(false, false);
@@ -9496,7 +9489,7 @@ public class Character extends AbstractCharacterObject {
 
     private void equipPendantOfSpirit() {
         if (pendantOfSpirit == null) {
-            pendantOfSpirit = TimerManager.getInstance().register(new Runnable() {
+            pendantOfSpirit = Scheduler.getInstance().register(new Runnable() {
                 @Override
                 public void run() {
                     if (pendantExp < 3) {

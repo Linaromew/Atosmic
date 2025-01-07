@@ -28,7 +28,7 @@ import client.Client;
 import client.command.Command;
 import net.server.Server;
 import net.server.world.World;
-import server.TimerManager;
+import server.Scheduler;
 
 import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.HOURS;
@@ -78,6 +78,6 @@ public class ShutdownCommand extends Command {
             }
         }
 
-        TimerManager.getInstance().schedule(Server.getInstance().shutdown(false), time);
+        Scheduler.getInstance().schedule(Server.getInstance().shutdown(false), time);
     }
 }

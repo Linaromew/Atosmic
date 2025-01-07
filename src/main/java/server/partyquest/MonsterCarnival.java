@@ -7,7 +7,7 @@ import net.server.Server;
 import net.server.channel.Channel;
 import net.server.world.Party;
 import net.server.world.PartyCharacter;
-import server.TimerManager;
+import server.Scheduler;
 import server.maps.MapleMap;
 import server.maps.Reactor;
 import tools.PacketCreator;
@@ -99,9 +99,9 @@ public class MonsterCarnival {
 
             // thanks Atoot, Vcoc for noting double CPQ functional being sent to players in CPQ start
 
-            timer = TimerManager.getInstance().schedule(() -> timeUp(), SECONDS.toMillis(map.getTimeDefault())); // thanks Atoot for noticing an irregular "event extended" issue here
-            effectTimer = TimerManager.getInstance().schedule(() -> complete(), SECONDS.toMillis(map.getTimeDefault() - 10));
-            respawnTask = TimerManager.getInstance().register(() -> respawn(), YamlConfig.config.server.RESPAWN_INTERVAL);
+            timer = Scheduler.getInstance().schedule(() -> timeUp(), SECONDS.toMillis(map.getTimeDefault())); // thanks Atoot for noticing an irregular "event extended" issue here
+            effectTimer = Scheduler.getInstance().schedule(() -> complete(), SECONDS.toMillis(map.getTimeDefault() - 10));
+            respawnTask = Scheduler.getInstance().register(() -> respawn(), YamlConfig.config.server.RESPAWN_INTERVAL);
 
             cs.initMonsterCarnival(cpq1, room);
         } catch (Exception e) {
@@ -351,8 +351,8 @@ public class MonsterCarnival {
 
         map.broadcastMessage(PacketCreator.getClock((int) MINUTES.toSeconds(3)));
 
-        timer = TimerManager.getInstance().schedule(() -> timeUp(), SECONDS.toMillis(map.getTimeExpand()));
-        effectTimer = TimerManager.getInstance().schedule(() -> complete(), SECONDS.toMillis(map.getTimeExpand() - 10)); // thanks Vcoc for noticing a time set issue here
+        timer = Scheduler.getInstance().schedule(() -> timeUp(), SECONDS.toMillis(map.getTimeExpand()));
+        effectTimer = Scheduler.getInstance().schedule(() -> complete(), SECONDS.toMillis(map.getTimeExpand() - 10)); // thanks Vcoc for noticing a time set issue here
     }
 
     public void complete() {

@@ -27,7 +27,7 @@ import client.Character;
 import client.Client;
 import client.command.Command;
 import net.server.Server;
-import server.TimerManager;
+import server.Scheduler;
 
 public class ServerRemoveChannelCommand extends Command {
     {
@@ -44,7 +44,7 @@ public class ServerRemoveChannelCommand extends Command {
         }
 
         final int worldId = Integer.parseInt(params[0]);
-        TimerManager.getInstance().execute(() -> {
+        Scheduler.getInstance().execute(() -> {
             if (Server.getInstance().removeChannel(worldId)) {
                 if (player.isLoggedinWorld()) {
                     player.dropMessage(5, "Successfully removed a channel on World " + worldId + ". Current channel count: " + Server.getInstance().getWorld(worldId).getChannelsSize() + ".");

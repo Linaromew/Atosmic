@@ -21,7 +21,7 @@ package client.newyear;
 
 import client.Character;
 import net.server.Server;
-import server.TimerManager;
+import server.Scheduler;
 import tools.DatabaseConnection;
 import tools.PacketCreator;
 
@@ -249,7 +249,7 @@ public class NewYearCardRecord {
             return;
         }
 
-        sendTask = TimerManager.getInstance().register(() -> {
+        sendTask = Scheduler.getInstance().register(() -> {
             Server server = Server.getInstance();
 
             int world = server.getCharacterWorld(receiverId);
