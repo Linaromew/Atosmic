@@ -1,4 +1,12 @@
-﻿# Cosmic
+## Atosmic
+Atosmic is a modified version of Cosmic to move away from the heavily threaded approach to prioritize a single background thread.
+The goal is to minimize the necessity of locks and fix deadlocks, and to provide slightly better build confidence.
+
+As the original repository lacks tests or functional health, I don't feel comfortable committing this hefty edit back to the main repository.
+
+---
+
+# Cosmic
 Cosmic is a server emulator for Global MapleStory (GMS) version 83.
 
 ## Introduction
